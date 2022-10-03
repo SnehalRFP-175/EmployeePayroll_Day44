@@ -14,11 +14,11 @@ class EmployeePayrollData{
         
     }
 
-    get profileImage(){
-        return this._profileImage;
+    get profilepic(){
+        return this.profilepic;
     }
-    set profileImage(profileImage){
-        this._profileImage = profileImage;
+    set profilepic(profilepic){
+        this.profilepic = profilepic;
     }
 
     get gender(){
@@ -65,7 +65,7 @@ class EmployeePayrollData{
     }
 
     toString(){
-        return "Name : "+this.name+", Profile Image : "+this.profileImage+", gender : "+this.gender
+        return "Name : "+this.name+", Profile Image : "+this.profilepic+", gender : "+this.gender
         +", Department : "+this.department+ ", Salary : "+this.salary+" , start date : "+ this.startDate
         +", notes : "+this.notes;
     }
@@ -79,7 +79,7 @@ window.addEventListener('DOMContentLoaded', (event) =>{
     const textError = document.querySelector('.text-error');
 
     name.addEventListener('input',function(){
-        if(name.ariaValueMax.length == 0){
+        if(name.value.length == 0){
             textError.textContent = "";
             return;
         }
@@ -100,3 +100,59 @@ window.addEventListener('DOMContentLoaded', (event) =>{
     output.textContent = salary.value;
     });
 });
+
+/* Day 44 UC-3 */
+
+const save = () => {
+    try {
+        let employeePayrollData = createEmployeePayroll();
+    }
+    catch{
+        return;
+    }
+}
+
+const createEmployeePayroll = () => {
+    let employeePayrollData = new EmployeePayrollData();
+    try{
+        employeePayrollData.name = getInputValueById('#name');
+    }
+    catch (e) {
+        setTextValue ('.text-error',e);
+        throw e;
+    }
+
+    employeePayrollData.profilepic = getSelectedValues('[name = profile]').pop();
+    employeePayrollData.gender = getSelectedValues('[name = gender]').pop();
+    employeePayrollData.department = getSelectedValues('[name = department]');
+    employeePayrollData.salary = getInputValueById('#salary');
+    employeePayrollData.salary = getInputValueById('#notes');
+
+    let date = getInputValueById('#day') + "" +getInputValueById('#month') +""+getInputValueById('#year');
+    employeePayrollData.date = date.parse(date);
+
+    console.log(employeePayrollData.toString());
+    return employeePayrollData;
+
+}
+
+const getSelectedValues = (propertyValue ) => {
+    let allItems = document.querySelectorAll(propertyValue);
+    let setItems =[];
+
+    allItems.forEach (item =>{
+        if(item.checked) 
+            setItems.push(item.value)
+    });
+    return setItems;
+}
+
+const getInputValueById = (id) => {
+    let value = document.querySelector(id).value;
+    return value;
+}
+
+const getInputElementById = (id) => {
+    let value = document.getElementById(id).value;
+    return value;
+}
